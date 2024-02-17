@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FormsToGoolgeTable</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <form action="#" class="login-form" name="submit-to-google-sheet">
+            <h2>Форма для заполнения данных</h2>
+
+            <input type="text" name="Name" id="Name" autocomplete="off" 
+            placeholder="Enter your name" >
+
+            <input type="email" name="email" id="email" autocomplete="off" 
+            placeholder="Enter your email" required>
+
+            <input type="password" name="password" id="password" autocomplete="off" 
+            placeholder="Enter your password" required>
+
+            <button type="submit">Отправить данные</button>
+
+            <span id="sendText"></span>
+
+        </form>
+
+
+    </div>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwIJWRmrjB6awX7SuY3QiW6S_Zyh1mGm6KlRei1_7Z9qtOxTjzSc2BYLlIMEfVTvDCc/exec'
+        const form = document.forms['submit-to-google-sheet']
+      
+        const sendText = document.getElementById('sendText')
+
+        form.addEventListener('submit', e => {
+          e.preventDefault()
+          fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response => {
+                sendText.innerHTML = "Спасибо! Ваши данные отправлены успешно."
+                setTimeout(function(){
+                    sendText.innerHTML = ""
+                }, 3000)
+                form.reset()
+            })
+            .catch(error => console.error('Error!', error.message))
+        })
+      </script>
+
+</body>
+</html>
